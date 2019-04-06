@@ -236,34 +236,15 @@ public class BaseRunner {
         String separator = File.separator;
         String commonPath = "src" + separator + "test" + separator + "resources" + separator;
 
-        String downloadFilepath = null;
-        try {
-            downloadFilepath = new File(commonPath).getCanonicalPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ChromeOptions options = new ChromeOptions();
-        HashMap<String, Object> chromeOptionsMap = new HashMap<String, Object>();
-        chromeOptionsMap.put("plugins.always_open_pdf_externally", true);
-        chromeOptionsMap.put("download.default_directory", downloadFilepath);
-        options.setExperimentalOption("prefs", chromeOptionsMap);
-
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        driver.get("https://www.tinkoff.ru/mobile-operator/documents/");
-        WebElement elem = driver.findElement(By.xpath("//a[contains(text(),'" + nameFileInPage + "')]"));
-        String nameFileInDisk = elem.getAttribute("href");
+        WebElement linkFIle = driver.findElement(By.xpath("//a[contains(text(),'" + nameFileInPage + "')]"));
+        String nameFileInDisk = linkFIle.getAttribute("href");
         nameFileInDisk = nameFileInDisk.substring(nameFileInDisk.lastIndexOf("/") + 1, nameFileInDisk.length());
-
         String halfPathFileInDisk = commonPath + nameFileInDisk;
 
         File file = new File(halfPathFileInDisk);
         file.delete();
 
-        elem.click();
+        linkFIle.click();
 
         File newFile = new File(halfPathFileInDisk);
 
@@ -286,7 +267,6 @@ public class BaseRunner {
             }
         }
 
-        driver.quit();
         Assert.assertTrue(newFile.exists());
     }
 }

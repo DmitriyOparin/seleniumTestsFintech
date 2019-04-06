@@ -77,6 +77,7 @@ public class TestsTariffs extends BaseRunner {
 
     @Test
     public void testDownloadFile() {
+        openPage("https://www.tinkoff.ru/mobile-operator/documents/");
         downloadAndControlFile("Описание акции \"Год кино с Тинькофф Мобайл\"");
     }
 }
