@@ -4,9 +4,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -224,5 +229,64 @@ public class BaseRunner {
         Button button = new Button(driver);
         boolean enabled = button.notActiveButton();
         Assert.assertFalse(enabled);
+    }
+
+
+    public void downloadAndControlFile(String nameFileInPage) {
+        String separator = File.separator;
+        String commonPath = "src" + separator + "test" + separator + "resources" + separator;
+
+        String downloadFilepath = null;
+        try {
+            downloadFilepath = new File(commonPath).getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ChromeOptions options = new ChromeOptions();
+        HashMap<String, Object> chromeOptionsMap = new HashMap<String, Object>();
+        chromeOptionsMap.put("plugins.always_open_pdf_externally", true);
+        chromeOptionsMap.put("download.default_directory", downloadFilepath);
+        options.setExperimentalOption("prefs", chromeOptionsMap);
+
+        WebDriver driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+        driver.get("https://www.tinkoff.ru/mobile-operator/documents/");
+        WebElement elem = driver.findElement(By.xpath("//a[contains(text(),'" + nameFileInPage + "')]"));
+        String nameFileInDisk = elem.getAttribute("href");
+        nameFileInDisk = nameFileInDisk.substring(nameFileInDisk.lastIndexOf("/") + 1, nameFileInDisk.length());
+
+        String halfPathFileInDisk = commonPath + nameFileInDisk;
+
+        File file = new File(halfPathFileInDisk);
+        file.delete();
+
+        elem.click();
+
+        File newFile = new File(halfPathFileInDisk);
+
+        String fullpath;
+        for (int i = 0; i < 5; i++){
+            if (newFile.exists()){
+                try {
+                    fullpath = new File(halfPathFileInDisk).getCanonicalPath();
+                    System.out.println("Файл загружен. Путь: " + fullpath);
+                    break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        driver.quit();
+        Assert.assertTrue(newFile.exists());
     }
 }

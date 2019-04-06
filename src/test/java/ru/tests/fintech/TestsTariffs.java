@@ -73,4 +73,10 @@ public class TestsTariffs extends BaseRunner {
         writeInField("Андреева Анна Александровна", "9222222222", null, null);
         controlNotActiveButton();
     }
+
+
+    @Test
+    public void testDownloadFile() {
+        downloadAndControlFile("Описание акции \"Год кино с Тинькофф Мобайл\"");
+    }
 }
