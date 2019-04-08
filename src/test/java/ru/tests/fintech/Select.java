@@ -8,10 +8,10 @@ public class Select {
 
     private WebElement selectElement;
 
-    Select(WebDriver driver, String text) {
-        String stringXpath = "//div[contains(@class, 'ui-dropdown-select_mobile_native')]//span[text()='" + text + "']";
-        this.selectElement = driver.findElement(By.xpath(stringXpath));
-    }
+//    Select(WebDriver driver, String text) {
+//        String stringXpath = "//div[contains(@class, 'ui-dropdown-select_mobile_native')]//span[text()='" + text + "']";
+//        this.selectElement = driver.findElement(By.xpath(stringXpath));
+//    }
 
     public void selectionValue(String text){
         selectElement.click();
