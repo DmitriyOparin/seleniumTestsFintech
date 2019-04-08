@@ -7,12 +7,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TinkoffMobilePage extends Page {
+
+    public Logger logger = LoggerFactory.getLogger(TinkoffMobilePage.class);
 
     public TinkoffMobilePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
+
     }
 
     // текстовые поля
@@ -73,6 +78,7 @@ public class TinkoffMobilePage extends Page {
 
     public void openPage() {
         driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        logger.info("Открыт сайт https://www.tinkoff.ru/mobile-operator/tariffs/");
     }
 
     public void writeInField(String fio, String mobile, String email, String country) {
@@ -89,6 +95,7 @@ public class TinkoffMobilePage extends Page {
             WebElement countryElement = selectNonResident();
             textInput.writeTextInput(countryElement, country);
         }
+        logger.info("Текстовые поля заполнены");
     }
 
     private WebElement selectNonResident() {
@@ -105,13 +112,15 @@ public class TinkoffMobilePage extends Page {
     public void cancelFindRegion() {
         try {
             driver.findElement(By.xpath("//div[@name='desktopMvnoRegionConfirmation']//span[@class='MvnoRegionConfirmation__option_v9PfP']")).click();
-        } catch (NoSuchElementException ignored) {
+        } catch (NoSuchElementException ex) {
+            logger.error("Не удалось сменить регион");
         }
     }
 
     public void changeRegion(String nameCity) {
         driver.findElement(By.xpath("//div[contains(@class, 'MvnoRegionConfirmation__wrapper_1Jmmm')]")).click();
         driver.findElement(By.xpath("//div[@class='MobileOperatorRegionsPopup__regionsContainer_18pns']//div[contains(text(),'" + nameCity + "')]")).click();
+        logger.info("Регион изменен на " + nameCity);
     }
 
     public void setMinSettingPackage() {
@@ -147,6 +156,8 @@ public class TinkoffMobilePage extends Page {
 
         selectedValueInInternet("0 ГБ");
         selectedValueInMobile("0 минут");
+
+        logger.info("Установлен минимальный пакет услуг");
     }
 
     public void setMaxSettingPackage() {
@@ -188,7 +199,7 @@ public class TinkoffMobilePage extends Page {
         if (!isSelectedCheckboxModemMode) {
             checkboxModemMode.setActive(checkboxmodemModeClicked);
         }
-
+        logger.info("Установлен максимальный пакет услуг");
     }
 
     private void selectedValueInInternet(String text) {
@@ -207,11 +218,13 @@ public class TinkoffMobilePage extends Page {
         Button button = new Button();
         boolean enabled = button.notActiveButton(buttonOrderSimCard);
         Assert.assertFalse(enabled);
+        logger.error("На кнопку можно кликнуть");
     }
 
-    public void controlLocation(String text) {
+    public void controlLocation(String nameCity) {
         WebElement element = driver.findElement(By.xpath("//div[contains(@class, 'MvnoRegionConfirmation__wrapper_1Jmmm')]"));
-        Assert.assertTrue(element.getText().contains(text));
+        Assert.assertTrue(element.getText().contains(nameCity));
+        logger.error("Регион не соответствует " + nameCity);
     }
 
 
@@ -220,6 +233,7 @@ public class TinkoffMobilePage extends Page {
         changeRegion(firstCity);
         String priceSecondCity = driver.findElement(By.xpath("//div[contains(@class, 'ui-form__field_title')]")).getText();
         Assert.assertFalse(priceFirstCity.equals(priceSecondCity));
+        logger.error("Суммы равны " + priceFirstCity + " = " + priceSecondCity);
         changeRegion(secondCity);
     }
 
@@ -227,9 +241,12 @@ public class TinkoffMobilePage extends Page {
         setMaxSettingPackage();
         String priceFirstCity = driver.findElement(By.xpath("//div[contains(@class, 'ui-form__field_title')]")).getText();
         changeRegion(firstCity);
+
         setMaxSettingPackage();
+
         String priceSecondCity = driver.findElement(By.xpath("//div[contains(@class, 'ui-form__field_title')]")).getText();
         Assert.assertTrue(priceFirstCity.equals(priceSecondCity));
+        logger.error("Суммы не равны " + priceFirstCity + " = " + priceSecondCity);
         changeRegion(secondCity);
     }
 }

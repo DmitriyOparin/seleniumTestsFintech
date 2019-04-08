@@ -5,11 +5,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
 public class TinkoffDocumentsPage extends Page {
+
+    public Logger logger = LoggerFactory.getLogger(TinkoffDocumentsPage.class);
+
     public TinkoffDocumentsPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -17,6 +22,7 @@ public class TinkoffDocumentsPage extends Page {
 
     public void openPage() {
         driver.get("https://www.tinkoff.ru/mobile-operator/documents/");
+        logger.info("Открыт сайт https://www.tinkoff.ru/mobile-operator/documents/");
     }
 
     public void downloadAndControlFile(String nameFileInPage) {
@@ -41,6 +47,7 @@ public class TinkoffDocumentsPage extends Page {
                 try {
                     fullpath = new File(halfPathFileInDisk).getCanonicalPath();
                     System.out.println("Файл загружен. Путь: " + fullpath);
+                    logger.info("Файл загружен");
                     break;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -49,11 +56,13 @@ public class TinkoffDocumentsPage extends Page {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    logger.error("Файл не скачен");
                     e.printStackTrace();
                 }
             }
         }
 
         Assert.assertTrue(newFile.exists());
+        logger.error("Файл отсутствует");
     }
 }

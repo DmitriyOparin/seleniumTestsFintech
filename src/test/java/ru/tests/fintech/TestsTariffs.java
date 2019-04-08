@@ -2,6 +2,8 @@ package ru.tests.fintech;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestsTariffs extends BaseRunner {
 
@@ -18,28 +20,10 @@ public class TestsTariffs extends BaseRunner {
 
 
     @Test
-    public void testIncorrectFields() {
-        TinkoffMobilePage tinkoffMobilePage = app.tinkoffMobilePage;
-        tinkoffMobilePage.openPage();
-        app.writeInField(By.cssSelector("div.ui-form__row_dropdownFIO input[name=fio]"), "noName");
-        app.controlErrorMessage(By.cssSelector("div.ui-form__row_dropdownFIO div.ui-form-field-error-message"), "Недостаточно информации. Введите фамилию, имя и отчество через пробел (Например: Иванов Иван Алексеевич)");
-        app.writeInField(By.cssSelector("div.ui-form__row_tel input[name=phone_mobile]"), "45672");
-        app.controlErrorMessage(By.cssSelector("div.ui-form__row_tel div.ui-form-field-error-message"), "Номер телефона должен состоять из 10 цифр, начиная с кода оператора");
-        app.writeInField(By.cssSelector("div.ui-form__row_tel input[name=phone_mobile]"), "43454545544");
-        app.controlErrorMessage(By.cssSelector("div.ui-form__row_tel div.ui-form-field-error-message"), "Код оператора должен начинаться с цифры 9");
-        app.selectNonResident();
-        app.writeInField(By.cssSelector("div.ui-form__row_dropdownSuggest input[name=temp_non_resident_nationality]"), "noCountry");
-        app.controlErrorMessage(By.cssSelector("div.ui-form__row_dropdownSuggest div.ui-form-field-error-message"), "Выберите страну из выпадающего списка");
-        app.writeInField(By.cssSelector("div.ui-form__row_dropdownSuggest input[name=email]"), "noEmail");
-        app.controlErrorMessage(By.cssSelector("div.ui-form__row_dropdownSuggest div.ui-form-field-error-message"), "Введите корректный адрес эл. почты");
-    }
-
-
-    @Test
     public void testTabSwitching() {
         GoogleMainPage googleMainPage = app.googleMainPage;
         googleMainPage.openPage();
-        googleMainPage.writeInFieldFindGoogle("мобайл тинькофф");
+        googleMainPage.writeInFieldFindGoogle("мобайл тинькофф ");
 
         GoogleResultPage googleResultPage = app.googleResultPage;
         googleResultPage.openSiteInFindGoogle("https://www.tinkoff.ru/mobile-operator/tariffs/");

@@ -3,12 +3,16 @@ package ru.tests.fintech;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
 public class Page {
     protected WebDriver driver;
     protected WebDriverWait wait;
+
+    public Logger logger = LoggerFactory.getLogger(Page.class);
 
     public Page(WebDriver driver) {
         this.driver = driver;
@@ -17,6 +21,7 @@ public class Page {
 
     public void refreshPage() {
         driver.navigate().refresh();
+        logger.info("Страница обновлена");
     }
 
     public String getGoogleWindowHandle() {
@@ -34,6 +39,8 @@ public class Page {
 
     public void switchToWindow(String idWindow) {
         driver.switchTo().window(idWindow);
+        logger.info("Переключение на другую вкладку");
+
     }
 
     public void controlUrlWindow(String text) {
@@ -50,5 +57,7 @@ public class Page {
     public void switchToAndCloseWindow(String idWindow) {
         driver.switchTo().window(idWindow);
         driver.close();
+        logger.info("Закрыта активная вкладку");
+
     }
 }
