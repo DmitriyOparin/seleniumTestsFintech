@@ -1,4 +1,4 @@
-package ru.tests.fintech;
+package ru.tests.fintech.pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -9,6 +9,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.tests.fintech.elements.Button;
+import ru.tests.fintech.elements.CheckBox;
+import ru.tests.fintech.elements.TextInput;
 
 public class TinkoffMobilePage extends Page {
 
@@ -233,7 +236,7 @@ public class TinkoffMobilePage extends Page {
         changeRegion(firstCity);
         String priceSecondCity = driver.findElement(By.xpath("//div[contains(@class, 'ui-form__field_title')]")).getText();
         Assert.assertFalse(priceFirstCity.equals(priceSecondCity));
-        logger.error("Суммы равны " + priceFirstCity + " = " + priceSecondCity);
+        logger.error("Суммы не равны " + priceFirstCity + " = " + priceSecondCity);
         changeRegion(secondCity);
     }
 
@@ -246,7 +249,7 @@ public class TinkoffMobilePage extends Page {
 
         String priceSecondCity = driver.findElement(By.xpath("//div[contains(@class, 'ui-form__field_title')]")).getText();
         Assert.assertTrue(priceFirstCity.equals(priceSecondCity));
-        logger.error("Суммы не равны " + priceFirstCity + " = " + priceSecondCity);
+        logger.error("Суммы равны " + priceFirstCity + " = " + priceSecondCity);
         changeRegion(secondCity);
     }
 }

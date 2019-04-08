@@ -1,4 +1,4 @@
-package ru.tests.fintech;
+package ru.tests.fintech.elements;
 
 import org.openqa.selenium.WebElement;
 

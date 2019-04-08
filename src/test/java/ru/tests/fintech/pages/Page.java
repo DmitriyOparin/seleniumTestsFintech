@@ -1,4 +1,4 @@
-package ru.tests.fintech;
+package ru.tests.fintech.pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;

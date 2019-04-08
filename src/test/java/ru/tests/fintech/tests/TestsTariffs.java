@@ -1,9 +1,11 @@
-package ru.tests.fintech;
+package ru.tests.fintech.tests;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ru.tests.fintech.app.Application;
+import ru.tests.fintech.pages.GoogleResultPage;
+import ru.tests.fintech.pages.TinkoffDocumentsPage;
+import ru.tests.fintech.pages.TinkoffMobilePage;
 
 public class TestsTariffs extends BaseRunner {
 
@@ -21,7 +23,7 @@ public class TestsTariffs extends BaseRunner {
 
     @Test
     public void testTabSwitching() {
-        GoogleMainPage googleMainPage = app.googleMainPage;
+        Application.GoogleMainPage googleMainPage = app.googleMainPage;
         googleMainPage.openPage();
         googleMainPage.writeInFieldFindGoogle("мобайл тинькофф ");
 

@@ -1,4 +1,4 @@
-package ru.tests.fintech;
+package ru.tests.fintech.pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -63,6 +63,5 @@ public class TinkoffDocumentsPage extends Page {
         }
 
         Assert.assertTrue(newFile.exists());
-        logger.error("Файл отсутствует");
     }
 }

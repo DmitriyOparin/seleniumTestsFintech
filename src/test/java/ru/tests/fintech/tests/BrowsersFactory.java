@@ -1,4 +1,4 @@
-package ru.tests.fintech;
+package ru.tests.fintech.tests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
