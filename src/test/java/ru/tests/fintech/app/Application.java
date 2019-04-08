@@ -11,10 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.tests.fintech.pages.GoogleResultPage;
-import ru.tests.fintech.pages.Page;
-import ru.tests.fintech.pages.TinkoffDocumentsPage;
-import ru.tests.fintech.pages.TinkoffMobilePage;
+import ru.tests.fintech.pages.*;
 import ru.tests.fintech.tests.BrowsersFactory;
 
 import java.util.concurrent.TimeUnit;
@@ -67,52 +64,4 @@ public class Application {
         element.sendKeys(Keys.TAB);
     }
 
-    public void writeInField(By locator, String text) {
-        WebElement element = driver.findElement(locator);
-        element.click();
-        element.clear();
-        element.sendKeys(text);
-        element.sendKeys(Keys.TAB);
-    }
-
-    public void selectNonResident() {
-        WebElement residentElem = driver.findElement(By.xpath("//div[contains(@class, 'ui-select__title_columned ui-select__title_fade')]"));
-        residentElem.click();
-        residentElem.sendKeys(Keys.DOWN);
-        residentElem.sendKeys(Keys.DOWN);
-        residentElem.sendKeys(Keys.ENTER);
-    }
-
-    public static class GoogleMainPage extends Page {
-
-        public Logger logger = LoggerFactory.getLogger(GoogleMainPage.class);
-
-        public GoogleMainPage(WebDriver driver) {
-            super(driver);
-            PageFactory.initElements(driver, this);
-        }
-
-        @FindBy(name = "q")
-        public WebElement searchField;
-
-        public void openPage() {
-            driver.get("https://www.google.ru/");
-            logger.info("Открыт сайт https://www.google.ru/");
-        }
-
-
-        public void writeInFieldFindGoogle(String text) {
-            searchField.click();
-            searchField.clear();
-            searchField.sendKeys(text);
-            selectionInFieldFindGoogle(By.xpath("//ul[@class='erkvQe']//span[contains(.,'тарифы')]"));
-            logger.info("В строку поиска введен текст: " + text);
-        }
-
-        private void selectionInFieldFindGoogle(By locator) {
-            WebDriverWait wait = new WebDriverWait(driver, 5);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-            driver.findElement(locator).click();
-        }
-    }
 }
